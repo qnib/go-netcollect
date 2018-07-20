@@ -1,0 +1,390 @@
+# Gopkg.toml example
+#
+# Refer to https://github.com/golang/dep/blob/master/docs/Gopkg.toml.md
+# for detailed Gopkg.toml documentation.
+#
+# required = ["github.com/user/thing/cmd/thing"]
+# ignored = ["github.com/user/project/pkgX", "bitbucket.org/user/project/pkgA/pkgY"]
+#
+# [[constraint]]
+#   name = "github.com/user/project"
+#   version = "1.0.0"
+#
+# [[constraint]]
+#   name = "github.com/user/project2"
+#   branch = "dev"
+#   source = "github.com/myfork/project2"
+#
+# [[override]]
+#   name = "github.com/x/y"
+#   version = "2.4.0"
+#
+# [prune]
+#   non-go = false
+#   go-tests = true
+#   unused-packages = true
+
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/Azure/go-ansiterm"
+
+[[constraint]]
+  name = "github.com/BurntSushi/toml"
+  version = "0.3.0"
+
+[[constraint]]
+  name = "github.com/Microsoft/go-winio"
+  version = "0.4.9"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/Microsoft/hcsshim"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/armon/go-metrics"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/armon/go-radix"
+
+[[constraint]]
+  name = "github.com/aws/aws-sdk-go"
+  version = "1.14.30"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/beorn7/perks"
+
+[[constraint]]
+  name = "github.com/boltdb/bolt"
+  version = "1.3.1"
+
+[[constraint]]
+  name = "github.com/cloudflare/cfssl"
+  version = "1.3.2"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/containerd/cgroups"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/containerd/containerd"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/containerd/continuity"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/containerd/fifo"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/containerd/typeurl"
+
+[[constraint]]
+  name = "github.com/coreos/etcd"
+  version = "3.3.8"
+
+[[constraint]]
+  name = "github.com/coreos/go-semver"
+  version = "0.2.0"
+
+[[constraint]]
+  name = "github.com/coreos/go-systemd"
+  version = "17.0.0"
+
+[[constraint]]
+  name = "github.com/deckarep/golang-set"
+  version = "1.7.0"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/docker/distribution"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/docker/docker"
+
+[[constraint]]
+  name = "github.com/docker/go-connections"
+  version = "0.3.0"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/docker/go-events"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/docker/go-metrics"
+
+[[constraint]]
+  name = "github.com/docker/go-units"
+  version = "0.3.3"
+
+[[constraint]]
+  name = "github.com/docker/libkv"
+  version = "0.2.1"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/docker/libnetwork"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/docker/libtrust"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/docker/swarmkit"
+
+[[constraint]]
+  name = "github.com/go-ini/ini"
+  version = "1.38.1"
+
+[[constraint]]
+  name = "github.com/godbus/dbus"
+  version = "4.1.0"
+
+[[constraint]]
+  name = "github.com/gogo/googleapis"
+  version = "1.0.0"
+
+[[constraint]]
+  name = "github.com/gogo/protobuf"
+  version = "1.1.1"
+
+[[constraint]]
+  name = "github.com/golang/protobuf"
+  version = "1.1.0"
+
+[[constraint]]
+  name = "github.com/gorilla/context"
+  version = "1.1.1"
+
+[[constraint]]
+  name = "github.com/gorilla/mux"
+  version = "1.6.2"
+
+[[constraint]]
+  name = "github.com/grpc-ecosystem/go-grpc-prometheus"
+  version = "1.2.0"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/grpc-ecosystem/grpc-opentracing"
+
+[[constraint]]
+  name = "github.com/hashicorp/consul"
+  version = "1.2.1"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/hashicorp/errwrap"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/hashicorp/go-cleanhttp"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/hashicorp/go-immutable-radix"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/hashicorp/go-memdb"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/hashicorp/go-msgpack"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/hashicorp/go-multierror"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/hashicorp/go-rootcerts"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/hashicorp/go-sockaddr"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/hashicorp/golang-lru"
+
+[[constraint]]
+  name = "github.com/hashicorp/memberlist"
+  version = "0.1.0"
+
+[[constraint]]
+  name = "github.com/hashicorp/serf"
+  version = "0.8.1"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/ishidawataru/sctp"
+
+[[constraint]]
+  name = "github.com/matttproud/golang_protobuf_extensions"
+  version = "1.0.1"
+
+[[constraint]]
+  name = "github.com/miekg/dns"
+  version = "1.0.8"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/mitchellh/go-homedir"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/mitchellh/mapstructure"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/moby/buildkit"
+
+[[constraint]]
+  name = "github.com/opencontainers/go-digest"
+  version = "1.0.0-rc1"
+
+[[constraint]]
+  name = "github.com/opencontainers/image-spec"
+  version = "1.0.1"
+
+[[constraint]]
+  name = "github.com/opencontainers/runc"
+  version = "0.0.8"
+
+[[constraint]]
+  name = "github.com/opencontainers/runtime-spec"
+  version = "1.0.1"
+
+[[constraint]]
+  name = "github.com/opencontainers/selinux"
+  version = "1.0.0-rc1"
+
+[[constraint]]
+  name = "github.com/opentracing/opentracing-go"
+  version = "1.0.2"
+
+[[constraint]]
+  name = "github.com/pborman/uuid"
+  version = "1.1.0"
+
+[[constraint]]
+  name = "github.com/philhofer/fwd"
+  version = "1.0.0"
+
+[[constraint]]
+  name = "github.com/pkg/errors"
+  version = "0.8.0"
+
+[[constraint]]
+  name = "github.com/prometheus/client_golang"
+  version = "0.8.0"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/prometheus/client_model"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/prometheus/common"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/prometheus/procfs"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/samuel/go-zookeeper"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/sean-/seed"
+
+[[constraint]]
+  name = "github.com/sirupsen/logrus"
+  version = "1.0.5"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/syndtr/gocapability"
+
+[[constraint]]
+  name = "github.com/tinylib/msgp"
+  version = "1.0.2"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/tonistiigi/fsutil"
+
+[[constraint]]
+  name = "github.com/ugorji/go"
+  version = "1.1.1"
+
+[[constraint]]
+  name = "github.com/vbatts/tar-split"
+  version = "0.10.2"
+
+[[constraint]]
+  name = "github.com/vishvananda/netlink"
+  version = "1.0.0"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/vishvananda/netns"
+
+[[constraint]]
+  name = "go.opencensus.io"
+  version = "0.14.0"
+
+[[constraint]]
+  branch = "master"
+  name = "golang.org/x/crypto"
+
+[[constraint]]
+  branch = "master"
+  name = "golang.org/x/net"
+
+[[constraint]]
+  branch = "master"
+  name = "golang.org/x/oauth2"
+
+[[constraint]]
+  branch = "master"
+  name = "golang.org/x/sync"
+
+[[constraint]]
+  branch = "master"
+  name = "golang.org/x/sys"
+
+[[constraint]]
+  name = "golang.org/x/text"
+  version = "0.3.0"
+
+[[constraint]]
+  branch = "master"
+  name = "google.golang.org/api"
+
+[[constraint]]
+  name = "google.golang.org/appengine"
+  version = "1.1.0"
+
+[[constraint]]
+  branch = "master"
+  name = "google.golang.org/genproto"
+
+[[constraint]]
+  name = "google.golang.org/grpc"
+  version = "1.13.0"
+
+[prune]
+  go-tests = true
+  unused-packages = true

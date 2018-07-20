@@ -1,0 +1,26 @@
+version: '3.6'
+services:
+   srv1:
+      build: container
+      image: pinger
+      environment:
+       - REMOTE_HOST=tasks.srv2
+      networks:
+       - testnet
+   srv2:
+      build: container
+      image: pinger
+      networks:
+       - testnet
+      environment:
+       - REMOTE_HOST=tasks.srv3
+   srv3:
+      build: container
+      image: pinger
+      environment:
+       - REMOTE_HOST=tasks.srv1
+      networks:
+       - testnet
+
+networks:
+  testnet:
