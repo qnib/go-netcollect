@@ -4,13 +4,12 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/client"
+	"errors"
 	"regexp"
 	"os"
-	"time"
-	"encoding/json"
 	"sync"
+	"github.com/fsouza/go-dockerclient"
+	"log"
 )
 
 var (
@@ -18,17 +17,22 @@ var (
 )
 
 
+func Connect() *docker.Client {
+	endpoint := "unix:///var/run/docker.sock"
+	client, err := docker.NewClient(endpoint)
+	if err != nil {
+		panic(err)
+	}
+	return client
+}
+
 func main() {
 	reg := ".*"
 	if len(os.Args) > 1 {
 		reg = os.Args[1]
 	}
-	cli, err := client.NewEnvClient()
-	if err != nil {
-		panic(err)
-	}
-
-	networks, err := cli.NetworkList(ctx, types.NetworkListOptions{})
+	cli := Connect()
+	networks, err := cli.ListNetworks()
 	if err != nil {
 		panic(err)
 	}
@@ -38,60 +42,68 @@ func main() {
 		panic(err)
 	}
 	var wg sync.WaitGroup
-	backChannel := make(chan *types.StatsJSON)
 	for _, network := range networks {
 		if netReg.MatchString(network.Name) {
-			net, err := cli.NetworkInspect(ctx, network.ID, types.NetworkInspectOptions{})
+			net, err := cli.NetworkInfo(network.ID)
 			if err != nil {
 				//TODO: Panic is to much
 				panic(err)
 			}
-			fmt.Printf("### %s %v\n", net.Name, net.Containers)
-			for cntId, _ := range net.Containers {
+			fmt.Printf("### %s\n", net.Name)
+			for cntId, ep := range net.Containers {
 				if epReg.MatchString(cntId) {
 					continue
 				}
-				cnt, err := cli.ContainerInspect(ctx, cntId)
+				cnt, err := cli.InspectContainer(cntId)
 				if err != nil {
 					//TODO: Panic is to much
 					panic(err)
 				}
 				wg.Add(1)
-				go startCollector(cli, &wg, backChannel, cntId, cnt)
+				go startCollector(cli, &wg, ep, cntId, cnt)
 			}
 		}
 	}
 	wg.Wait()
-	fmt.Println("WG done")
+	fmt.Println("## WG done")
 }
 
-func startCollector(cli *client.Client, wg *sync.WaitGroup, data chan *types.StatsJSON, cntId string, cnt types.ContainerJSON) {
+func startCollector(cli *docker.Client, wg *sync.WaitGroup, net docker.Endpoint, cntId string, cnt *docker.Container) {
 	_ = cnt
-	fmt.Printf("Start Collector for: %s\n", cntId)
-	containerStats, err := cli.ContainerStats(ctx, cntId, true)
-	responseBody := containerStats.Body
-	//defer responseBody.Close()
-	defer wg.Done()
-	if err != nil {
-		return
+	fmt.Printf("## Start Collector for: %s\n", cntId)
+	errChannel := make(chan error, 1)
+	statsChannel := make(chan *docker.Stats)
+	// FIgure out which interface has the IP in net?
+	opts := docker.StatsOptions{
+		ID:     cntId,
+		Stats:  statsChannel,
+		Stream: true,
 	}
-	var statsJSON *types.StatsJSON
-	dec := json.NewDecoder(responseBody)
 
-	timer := time.NewTicker(1000 * time.Millisecond)
+	go func() {
+		errChannel <- cli.Stats(opts)
+	}()
+
 	for {
 		select {
-		case <-timer.C:
-			if err := dec.Decode(&statsJSON); err != nil {
+		case stats, ok := <-statsChannel:
+			if !ok {
+				err := errors.New(fmt.Sprintf("## Bad response getting stats for container: %s", cntId))
+				log.Println(err.Error())
 				return
 			}
-			if statsJSON != nil {
-				fmt.Printf("%v\n", statsJSON)
-				data <- statsJSON
-			}
-		case <-ctx.Done():
-			return
+
+			fmt.Printf("%s\n", assembleRes(cnt, stats))
+
 		}
 	}
-	fmt.Printf("-> %s startCollector finished\n", cntId)
+	fmt.Printf("### -> %s startCollector finished\n", cntId)
+}
+
+func assembleRes(cnt *docker.Container, stats *docker.Stats) (res string) {
+	res = fmt.Sprintf("cntId:%s time:%s", cnt.ID, stats.Read.Format("2006-01-02T15:04:05.999999"))
+	for iname, iface := range stats.Networks {
+		res = fmt.Sprintf("%s %s.RxBytes:%d %s.TxBytes:%d", res, iname, iface.RxBytes, iname, iface.TxBytes)
+	}
+	return res
 }
