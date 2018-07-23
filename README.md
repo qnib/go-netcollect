@@ -1,6 +1,14 @@
 # go-netcollect
 Simple PoC to collect metrics for a specific network.
 
+
+## Building Binaries
+
+```
+$ drone exec
+[alpine:L0:0s] + /usr/local/go/bin/go build -o ./bundle/go-netcollect_Alpine
+[x86:L0:0s] + go build -o ./bundle/go-netcollect_x86
+```
 ## Building images
 ```
 $ docker-compose build
