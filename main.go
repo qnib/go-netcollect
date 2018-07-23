@@ -10,6 +10,8 @@ import (
 	"sync"
 	"github.com/fsouza/go-dockerclient"
 	"log"
+	"bytes"
+	"time"
 )
 
 var (
@@ -73,7 +75,10 @@ func startCollector(cli *docker.Client, wg *sync.WaitGroup, net docker.Endpoint,
 	fmt.Printf("## Start Collector for: %s\n", cntId)
 	errChannel := make(chan error, 1)
 	statsChannel := make(chan *docker.Stats)
-	// FIgure out which interface has the IP in net?
+	// Figure out which interface has the IP in net?
+	ethFace, err := correlateIface(cli, cntId, net.IPv4Address)
+	_ = err
+	_ = ethFace
 	opts := docker.StatsOptions{
 		ID:     cntId,
 		Stats:  statsChannel,
@@ -100,6 +105,37 @@ func startCollector(cli *docker.Client, wg *sync.WaitGroup, net docker.Endpoint,
 	fmt.Printf("### -> %s startCollector finished\n", cntId)
 }
 
+func correlateIface(cli *docker.Client, cntId, ipv4 string) (iface string, err error) {
+	config := docker.CreateExecOptions{
+		Container:    cntId,
+		AttachStdin:  false,
+		AttachStdout: true,
+		AttachStderr: true,
+		Tty:          true,
+		Cmd:          []string{"ip", "-o", "-4", "addr"},
+	}
+	execObj, err := cli.CreateExec(config)
+	if err != nil {
+		return
+	}
+	var stdout, stderr bytes.Buffer
+	success := make(chan struct{})
+	opts := docker.StartExecOptions{
+		OutputStream: &stdout,
+		ErrorStream:  &stderr,
+		RawTerminal:  true,
+		Success:      success,
+	}
+	go func() {
+		if err := cli.StartExec(execObj.ID, opts); err != nil {
+			panic(err)
+		}
+	}()
+	<-success
+	time.Sleep(5*time.Second)
+	fmt.Printf("stdout:%v || stderr:%s\n",stdout.String(), stderr.String())
+	return
+}
 func assembleRes(cnt *docker.Container, stats *docker.Stats) (res string) {
 	res = fmt.Sprintf("cntId:%s time:%s", cnt.ID, stats.Read.Format("2006-01-02T15:04:05.999999"))
 	for iname, iface := range stats.Networks {
